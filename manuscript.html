@@ -51,9 +51,9 @@
   <meta name="citation_fulltext_html_url" content="https://related-sciences.github.io/gwas-analysis-manuscript/" />
   <meta name="citation_pdf_url" content="https://related-sciences.github.io/gwas-analysis-manuscript/manuscript.pdf" />
   <link rel="alternate" type="application/pdf" href="https://related-sciences.github.io/gwas-analysis-manuscript/manuscript.pdf" />
-  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/2dacdac3877b3af5508eadd96e7f63e5e3a022bb/" />
-  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/2dacdac3877b3af5508eadd96e7f63e5e3a022bb/" />
-  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/2dacdac3877b3af5508eadd96e7f63e5e3a022bb/manuscript.pdf" />
+  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/1bb8e46823e5b85ee745681e70c0aa33aa2c4db0/" />
+  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/1bb8e46823e5b85ee745681e70c0aa33aa2c4db0/" />
+  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/1bb8e46823e5b85ee745681e70c0aa33aa2c4db0/manuscript.pdf" />
   <meta property="og:type" content="article" />
   <meta property="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
@@ -67,9 +67,9 @@
 </header>
 <p><small><em>
 This manuscript
-(<a href="https://related-sciences.github.io/gwas-analysis-manuscript/v/2dacdac3877b3af5508eadd96e7f63e5e3a022bb/">permalink</a>)
+(<a href="https://related-sciences.github.io/gwas-analysis-manuscript/v/1bb8e46823e5b85ee745681e70c0aa33aa2c4db0/">permalink</a>)
 was automatically generated
-from <a href="https://github.com/related-sciences/gwas-analysis-manuscript/tree/2dacdac3877b3af5508eadd96e7f63e5e3a022bb">related-sciences/gwas-analysis-manuscript@2dacdac</a>
+from <a href="https://github.com/related-sciences/gwas-analysis-manuscript/tree/1bb8e46823e5b85ee745681e70c0aa33aa2c4db0">related-sciences/gwas-analysis-manuscript@1bb8e46</a>
 on February 17, 2020.
 </em></small></p>
 <h2 id="authors">Authors</h2>
@@ -200,6 +200,7 @@ Department of Something, University of Whatever; Department of Whatever, Univers
 <li>Hail documentation is fairly thorough, though essentially no examples or answers are available outside of that documentation (or the discourse)</li>
 <li>PLINK examples and documentation are both very extensive and easily found, however few PLINK workflows don’t also include the need for some
 scripting language in the same pipeline for interpreting/visualizing results (those outputs are then often used to parameterize other PLINK commands, as exemplified by the tutorials in the project)</li>
+<li>There are many ways to do the same thing in Hail and it is difficult to know which method to choose (cf. https://discuss.hail.is/t/issues-with-sample-and-variant-qc-by-group/1286/5)</li>
 </ul></li>
 </ul></li>
 <li>Data
@@ -451,6 +452,80 @@ scripting language in the same pipeline for interpreting/visualizing results (th
 <li>Phylogenetic Analysis
 <ul>
 <li>See <a href="https://bmcgenet.biomedcentral.com/articles/10.1186/1471-2156-11-94">Jombart et al. 2010</a> (<a href="https://rdrr.io/cran/adephylo/man/ppca.html">ppca</a> which uses PCA and clustering to identify ancestry</li>
+</ul></li>
+</ul>
+<h3 id="genetic-relatedness">Genetic Relatedness</h3>
+<ul>
+<li><a href="http://people.virginia.edu/~wc9c/KING/manual.html">KING</a>
+<ul>
+<li>Should be run with rare and correlated variants</li>
+<li>“Please do not prune or filter any”good" SNPs that pass QC prior to any KING inference, unless the number of variants is too many to fit the computer memory, e.g., &gt; 100,000,000 as in a WGS study, in which case rare variants can be filtered out. LD pruning is not recommended in KING."</li>
+</ul></li>
+<li>Hail <a href="https://hail.is/docs/0.2/methods/genetics.html?highlight=identity_by_descent#hail.methods.pc_relate">pc_relate</a></li>
+<li><a href="https://macarthurlab.org/2018/10/17/gnomad-v2-1/">Gnomad v2 QC</a>
+<ul>
+<li>“Relatedness filtering for this release was done very similarly to the 2.0.2 release. The only difference is that instead of using KING, we used the pc_relate method in Hail to infer relatedness”</li>
+</ul></li>
+<li><a href="https://macarthurlab.org/2019/10/16/gnomad-v3-0/">Gnomad v3 QC</a>
+<ul>
+<li>“We used Hail pc_relate to compute relatedness, followed by Hail maximal_independent_set in order to select as many samples as possible, while still avoiding including any pairs of first and second degree relatives”</li>
+<li>Application of pc_relate is <a href="https://github.com/macarthur-lab/gnomad_qc/blob/master/gnomad_qc/v3/sample_qc/sample_qc.py#L424">here</a></li>
+</ul></li>
+<li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4716688/">PC-Relate</a>
+<ul>
+<li>Summary
+<ul>
+<li>Many initial methods for relatedness do not account for population structure including:
+<ul>
+<li>Kinship coefficients</li>
+<li>The –make-rel method in PLINK</li>
+<li>PLINK cites GCTA as having the definition for relatedness, so presumably that also suffers from this</li>
+<li>The method used in Hail GRM and RRM (which uses the same GCTA definition)</li>
+</ul></li>
+<li>KING can handle distinct populations but breaks down when there is recent admixture in the immediate ancestry of a pair of samples
+<ul>
+<li>i.e. If you have perfectly pure subpopulations there are no problems, but if two siblings have a European and Asian parent, it stops working</li>
+</ul></li>
+<li>PC-Relate can handle recent and distant relatedness</li>
+<li>The same authors developed PC-AiR
+<ul>
+<li>PC-Relate uses this to get an initial set of PCs that are then regressed against genotype calls for individuals</li>
+<li>Predictions from this model are then used to create allele frequencies used in the usual GRM formula</li>
+</ul></li>
+</ul></li>
+<li>“Existing approaches for the estimation of frequently used measures of recent genetic relatedness, such as kinship coefficients and identity by descent (IBD) sharing probabilities, have limitations in the presence of population structure”</li>
+<li>“For example, a variety of maximum likelihood5, 6, 7 and method of moments8, 9, 10 estimators have been developed for relatedness inference from genotype data under a strong assumption of sampling from a single population with no underlying ancestral diversity. In samples with population stratification, these methods that assume population homogeneity have been shown11, 12, 13 to give extremely biased estimates of recent genetic relatedness.”</li>
+<li>“The widely used KING-robust method11 has been developed for inference on close pedigree relationships under an assumption of sampling from ancestrally distinct subpopulations with no admixture. However, KING-robust gives biased relatedness estimates for pairs of individuals who have different ancestry, which can result in incorrect relationship inference for relatives with admixed ancestry.”</li>
+<li>The section “Convolution of Recent and Distant Genetic Relatedness” defines the GRM formula (same as used in Hail/PLINK I think)</li>
+<li>Recent vs Distant genetic relatedness
+<ul>
+<li>From <a href="http://www.biostat.washington.edu/sites/default/files/modules/TOPMED_RELATEDNESS_INFERENCE_Module12_2018.pdf">PC-Relate Presentation</a>
+<ul>
+<li>Distinguishing familial relatedness from population structure using genotype data is difficult, as both manifest as genetic similarity through the sharing of alleles.</li>
+<li>It is important to note that relatedness and ancestry are a continuum</li>
+<li>On KING: “A limitation of the method is that it gives biased kinship estimates for individuals with different ancestry, including close relatives who are admixed.”</li>
+</ul></li>
+</ul></li>
+<li>The GRM calculation is asymptotically equal to kinship coefficient (see right after Equation 2)</li>
+</ul></li>
+<li>PC-Relate in Hail
+<ul>
+<li>https://github.com/hail-is/hail/issues/3490
+<ul>
+<li>This thread talks the PC relate implementation and issues with it
+<ul>
+<li>PC-AiR uses KING to get an initial unrelated set but “Hail’s version of pc-relate does not identify an initial set of related and unrelated individuals. The R pcrelate implementation (the official / reference implementation by the authors of the paper) does this to identify a set of individuals on which to run the principal components analysis. It is not entirely clear to me why this is necessary, and we don’t currently have a mechanism for doing so (since pc_relate is our mechanism for determining related and unrelated individuals when there is population structure in the data set). If you have prior knowledge about related samples, you might try filtering to an known unrelated set and computing the scores from that set. I’m curious if that makes any difference in the results.”</li>
+<li>“Specifically, PCA is better run after first removing related individuals which is problematic as this is the method that should determine if they’re related in the first place”</li>
+<li>“A longer term solution is to simply implement PC-AiR in hail. I skimmed the implementation section of the paper earlier this week and it looks very straightforward. It seems to boil down to using the KING estimator to estimate relatedness, compute PCA on unrelated individuals, project related individuals into unrelated PC space. Finally, we can use pc_relate to improve on our original estimates of relatedness from KING.”</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>PLINK
+<ul>
+<li>See https://www.cog-genomics.org/plink/1.9/distance (Relationship/covariance)
+<ul>
+<li><code>--make-rel</code> is realized relationship matrix (presumably same as Hail <a href="https://hail.is/docs/0.2/methods/genetics.html?highlight=genetic_relatedness#hail.methods.realized_relationship_matrix">RRM</a>) and cites <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3014363/">GCTA: A Tool for Genome-wide Complex Trait Analysis</a> as the reference implementation (this paper has the formula in the Hail docs)</li>
+</ul></li>
 </ul></li>
 </ul>
 <h3 id="ascertainment-bias">Ascertainment bias</h3>
