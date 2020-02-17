@@ -51,9 +51,9 @@
   <meta name="citation_fulltext_html_url" content="https://related-sciences.github.io/gwas-analysis-manuscript/" />
   <meta name="citation_pdf_url" content="https://related-sciences.github.io/gwas-analysis-manuscript/manuscript.pdf" />
   <link rel="alternate" type="application/pdf" href="https://related-sciences.github.io/gwas-analysis-manuscript/manuscript.pdf" />
-  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/b93554cd6669b0cdaf4bea51bc2c3e5e80345432/" />
-  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/b93554cd6669b0cdaf4bea51bc2c3e5e80345432/" />
-  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/b93554cd6669b0cdaf4bea51bc2c3e5e80345432/manuscript.pdf" />
+  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/2dacdac3877b3af5508eadd96e7f63e5e3a022bb/" />
+  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/2dacdac3877b3af5508eadd96e7f63e5e3a022bb/" />
+  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/2dacdac3877b3af5508eadd96e7f63e5e3a022bb/manuscript.pdf" />
   <meta property="og:type" content="article" />
   <meta property="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
@@ -67,9 +67,9 @@
 </header>
 <p><small><em>
 This manuscript
-(<a href="https://related-sciences.github.io/gwas-analysis-manuscript/v/b93554cd6669b0cdaf4bea51bc2c3e5e80345432/">permalink</a>)
+(<a href="https://related-sciences.github.io/gwas-analysis-manuscript/v/2dacdac3877b3af5508eadd96e7f63e5e3a022bb/">permalink</a>)
 was automatically generated
-from <a href="https://github.com/related-sciences/gwas-analysis-manuscript/tree/b93554cd6669b0cdaf4bea51bc2c3e5e80345432">related-sciences/gwas-analysis-manuscript@b93554c</a>
+from <a href="https://github.com/related-sciences/gwas-analysis-manuscript/tree/2dacdac3877b3af5508eadd96e7f63e5e3a022bb">related-sciences/gwas-analysis-manuscript@2dacdac</a>
 on February 17, 2020.
 </em></small></p>
 <h2 id="authors">Authors</h2>
@@ -225,8 +225,7 @@ scripting language in the same pipeline for interpreting/visualizing results (th
 </ul></li>
 </ul>
 <h2 id="notes">Notes</h2>
-<ul>
-<li>UKBB
+<h3 id="ukbb">UKBB</h3>
 <ul>
 <li><a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2018/03/UKB-Genotyping-and-Imputation-Data-Release-FAQ-v3-2-1.pdf">UKB Genotyping and Imputation Data Release March 2018 – FAQ</a>
 <ul>
@@ -261,9 +260,7 @@ scripting language in the same pipeline for interpreting/visualizing results (th
 <li>SNP QC also done using ROH which is sequential heterozygous call rates</li>
 <li>Sample QC adjusts for gender (finds .1% are wrong – has interesting aneuploidy figure)</li>
 </ul></li>
-</ul></li>
-<li>GPU Acceleration
-<ul>
+<li>GPU Acceleration</li>
 <li>Epistatic Interactions
 <ul>
 <li><a href="https://www.nature.com/articles/cr201068">SHEsisEpi, a GPU-enhanced genome-wide SNP-SNP interaction scanning algorithm, efficiently reveals the risk genetic epistasis in bipolar disorder</a></li>
@@ -287,8 +284,8 @@ scripting language in the same pipeline for interpreting/visualizing results (th
 </ul></li>
 </ul></li>
 </ul></li>
-</ul></li>
-<li>Ecosystem Tools
+</ul>
+<h3 id="ecosystem-tools">Ecosystem Tools</h3>
 <ul>
 <li><a href="https://github.com/privefl/bigsnpr">bigsnpr</a>
 <ul>
@@ -331,8 +328,8 @@ scripting language in the same pipeline for interpreting/visualizing results (th
 <p>One option to work with large arrays is to use bit-packing, i.e., to pack two or more items of data into a single byte. E.g., this is what the plink BED format does. If you have have diploid calls that are only ever biallelic, then it is possible to fit 4 genotype calls into a single byte. This is 8 times smaller than the NumPy unpacked representation.</p>
 <p>However, coding against bit-packed data is not very convenient. Also, there are several libraries available for Python which allow N-dimensional arrays to be stored using compression: h5py, bcolz and zarr. Genotype data is usually extremely compressible due to sparsity - most calls are homozygous ref, i.e., (0, 0), so there are a lot of zeros.</p></li>
 </ul></li>
-</ul></li>
-<li>LD pruning
+</ul>
+<h3 id="ld-pruning">LD pruning</h3>
 <ul>
 <li>https://hail.is/docs/0.1/hail.VariantDataset.html#hail.VariantDataset.ld_prune</li>
 <li>Hail discussions on ld prune implementation:
@@ -400,8 +397,8 @@ scripting language in the same pipeline for interpreting/visualizing results (th
 </ol></li>
 </ul></li>
 </ul></li>
-</ul></li>
-<li>PCA
+</ul>
+<h3 id="pca">PCA</h3>
 <ul>
 <li>Projecting samples using pre-computed PCs
 <ul>
@@ -455,8 +452,8 @@ scripting language in the same pipeline for interpreting/visualizing results (th
 <ul>
 <li>See <a href="https://bmcgenet.biomedcentral.com/articles/10.1186/1471-2156-11-94">Jombart et al. 2010</a> (<a href="https://rdrr.io/cran/adephylo/man/ppca.html">ppca</a> which uses PCA and clustering to identify ancestry</li>
 </ul></li>
-</ul></li>
-<li>Ascertainment bias
+</ul>
+<h3 id="ascertainment-bias">Ascertainment bias</h3>
 <ul>
 <li>SNP arrays are designed using an “ascertainment sample” and it is this sample that determines what SNPs make it onto the array</li>
 <li>As these SNPs are often filtered to only this with AF in a certain range, it is possible for many rarer variants in such a small sample to be ignored (ascertainment bias)</li>
@@ -467,8 +464,8 @@ scripting language in the same pipeline for interpreting/visualizing results (th
 <li>“In cases where there is little or no overlap between the ethnicities of the individuals included in the typed sample and the ascertainment samples, however, corrections can only be made in parametric models describing the genetic relationship between the populations. In such cases, it will typically be difficult or impossible to use classical non-parametric methods for statistical inference.”</li>
 </ul></li>
 </ul></li>
-</ul></li>
-<li>File Formats
+</ul>
+<h3 id="file-formats">File Formats</h3>
 <ul>
 <li>BGEN
 <ul>
@@ -478,9 +475,7 @@ data</a></li>
 <li>https://www.well.ox.ac.uk/~gav/bgen_format/</li>
 <li>https://www.well.ox.ac.uk/~gav/bgen_format/spec/latest.html</li>
 </ul></li>
-</ul></li>
-<li>SIMD and Native Libraries
-<ul>
+<li>SIMD and Native Libraries</li>
 <li>Hail uses breeze (https://github.com/hail-is/hail/blob/de2968e0bf9215e058b1fbace4ae618cc93463fe/hail/src/main/scala/is/hail/expr/ir/BlockMatrixIR.scala)</li>
 <li>Breeze uses netlib-java which is a wrapper for BLAS/LAPACK/ARPACK (https://github.com/scalanlp/breeze/wiki/Breeze-Linear-Algebra#performance)
 <ul>
@@ -494,8 +489,8 @@ data</a></li>
 <li>On <a href="https://stackoverflow.com/questions/17858104/what-is-the-relation-between-blas-lapack-and-atlas">Atlas vs BLAS vs LAPACK</a>: “ATLAS is a portable reasonably good implementation of the BLAS interfaces, that also implements a few of the most commonly used LAPACK operations.”</li>
 <li>An OpenJDK vector API seems like it would provide SIMD op access, though it is still incubating as of JDK13 (<a href="http://cr.openjdk.java.net/~kkharbas/vector-api/CSR/javadoc.02/jdk.incubator.vector/jdk/incubator/vector/package-summary.html">example</a>)</li>
 <li>Good overview of vectorization in Spark: https://www.waitingforcode.com/apache-spark-sql/vectorized-operations-apache-spark-sql/read</li>
-</ul></li>
-<li>C/G and A/T SNPs
+</ul>
+<h3 id="cg-and-at-snps">C/G and A/T SNPs</h3>
 <ul>
 <li>This QC step is common because the probe sequence on genotyping arrays is not specific to a reference genome, by design. This means that the genotyping data can tell you that an “A” nucleotide was present at a locus but it doesn’t actually know if this nucleotide represents some kind of “variant” with respect to a larger population. The probes are chosen such that they capture individual sites of common variation but deciding which nucleotides comprise heterozygous, homozygous ref, homozygous alt genotypes (i.e. make a call) is up to the user. For any given site, the arrays capture multiple individual nucleotides so one way to do this independent of a reference genome, for a single dataset, is to simply assume that whatever nucleotide is less common is the minor (aka alternate) allele and the other is the major (aka reference) allele. This is an acceptable (and very common) method for analyzing a single dataset but causes obvious problems when trying to compare calls for the same variants between datasets (a nucleotide may have been the alternate in one and reference in the other). Two strategies for making datasets comparable then are:
 <ol type="1">
@@ -529,8 +524,8 @@ two alleles of the SNPs are complementary (A/T or C/G), the true strand remains 
 &gt; However, there are two major challenges to be resolved: … 2) the ambiguous A/T and G/C single nucleotide polymorphisms (SNPs) for which the strand is not obvious. For many statistical analyses, such as meta-analyses of GWAS and genotype imputation, it is vital that the datasets to be used are aligned to the same genomic strand.</li>
 <li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6099125/">Is ‘forward’ the same as ‘plus’?… and other adventures in SNP allele nomenclature</a></li>
 </ul></li>
-</ul></li>
-<li>bigsnpr/bigstatsr
+</ul>
+<h3 id="bigsnprbigstatsr">bigsnpr/bigstatsr</h3>
 <ul>
 <li>In trying to understand how the loadings plots were generated in https://privefl.github.io/bigsnpr/articles/how-to-PCA.html, I found these useful source links:
 <ul>
@@ -539,8 +534,8 @@ two alleles of the SNPs are complementary (A/T or C/G), the true strand remains 
 <li>what big_randomSVD calls: https://github.com/privefl/bigstatsr/blob/master/R/randomSVD.R#L105</li>
 <li>where big_SVD class is defined: https://github.com/privefl/bigstatsr/blob/c859ad28d9c6f8c8cc365c3315e3abbb81e128a8/R/SVD.R#L92</li>
 </ul></li>
-</ul></li>
-<li>Computational Operations
+</ul>
+<h3 id="gwas-pipeline-operations">GWAS Pipeline Operations</h3>
 <ul>
 <li>These are frequent operations in a GWAS workflow:
 <ul>
@@ -551,8 +546,8 @@ two alleles of the SNPs are complementary (A/T or C/G), the true strand remains 
 <li>Regression</li>
 <li>Association testing</li>
 </ul></li>
-</ul></li>
-<li>Canines
+</ul>
+<h3 id="canines">Canines</h3>
 <ul>
 <li>From <a href="https://www.nature.com/articles/news051205-6">Boxer bares all</a> (2005)
 <ul>
@@ -568,7 +563,6 @@ two alleles of the SNPs are complementary (A/T or C/G), the true strand remains 
 <li>On choosing a boxer: “This particular animal was chosen for sequencing because it had the lowest heterozygosity rate among ∼120 dogs tested at a limited set of loci; subsequent analysis showed that the genome-wide heterozygosity rate in this boxer is not substantially different from other breeds (Parker 2004)”
 <ul>
 <li>The “subsequent analysis” is <a href="https://www.ncbi.nlm.nih.gov/pubmed/15155949">Parker, H. G. et al. Genetic structure of the purebred domestic dog</a></li>
-</ul></li>
 </ul></li>
 </ul></li>
 </ul>
