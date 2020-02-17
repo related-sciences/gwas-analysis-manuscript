@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="John Doe" />
   <meta name="author" content="Jane Roe" />
-  <meta name="dcterms.date" content="2020-02-16" />
+  <meta name="dcterms.date" content="2020-02-17" />
   <meta name="keywords" content="markdown, publishing, manubot" />
   <title>Manuscript Title</title>
   <style>
@@ -29,8 +29,8 @@
   <meta name="citation_title" content="Manuscript Title" />
   <meta property="og:title" content="Manuscript Title" />
   <meta property="twitter:title" content="Manuscript Title" />
-  <meta name="dc.date" content="2020-02-16" />
-  <meta name="citation_publication_date" content="2020-02-16" />
+  <meta name="dc.date" content="2020-02-17" />
+  <meta name="citation_publication_date" content="2020-02-17" />
   <meta name="dc.language" content="en-US" />
   <meta name="citation_language" content="en-US" />
   <meta name="dc.relation.ispartof" content="Manubot" />
@@ -51,9 +51,9 @@
   <meta name="citation_fulltext_html_url" content="https://related-sciences.github.io/gwas-analysis-manuscript/" />
   <meta name="citation_pdf_url" content="https://related-sciences.github.io/gwas-analysis-manuscript/manuscript.pdf" />
   <link rel="alternate" type="application/pdf" href="https://related-sciences.github.io/gwas-analysis-manuscript/manuscript.pdf" />
-  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/8dd3e3dce2a1cff1604d231401b13a0a6c3db065/" />
-  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/8dd3e3dce2a1cff1604d231401b13a0a6c3db065/" />
-  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/8dd3e3dce2a1cff1604d231401b13a0a6c3db065/manuscript.pdf" />
+  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/b93554cd6669b0cdaf4bea51bc2c3e5e80345432/" />
+  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/b93554cd6669b0cdaf4bea51bc2c3e5e80345432/" />
+  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/b93554cd6669b0cdaf4bea51bc2c3e5e80345432/manuscript.pdf" />
   <meta property="og:type" content="article" />
   <meta property="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" sizes="192x192" href="https://manubot.org/favicon-192x192.png" />
@@ -67,10 +67,10 @@
 </header>
 <p><small><em>
 This manuscript
-(<a href="https://related-sciences.github.io/gwas-analysis-manuscript/v/8dd3e3dce2a1cff1604d231401b13a0a6c3db065/">permalink</a>)
+(<a href="https://related-sciences.github.io/gwas-analysis-manuscript/v/b93554cd6669b0cdaf4bea51bc2c3e5e80345432/">permalink</a>)
 was automatically generated
-from <a href="https://github.com/related-sciences/gwas-analysis-manuscript/tree/8dd3e3dce2a1cff1604d231401b13a0a6c3db065">related-sciences/gwas-analysis-manuscript@8dd3e3d</a>
-on February 16, 2020.
+from <a href="https://github.com/related-sciences/gwas-analysis-manuscript/tree/b93554cd6669b0cdaf4bea51bc2c3e5e80345432">related-sciences/gwas-analysis-manuscript@b93554c</a>
+on February 17, 2020.
 </em></small></p>
 <h2 id="authors">Authors</h2>
 <ul>
@@ -352,8 +352,29 @@ scripting language in the same pipeline for interpreting/visualizing results (th
 <li>Next, a giant BlockMatrix multiplication with its transpose used to get R2 across all partitions</li>
 <li>This matrix is than sparsified based on row intervals (see <a href="https://hail.is/docs/0.2/linalg/hail.linalg.BlockMatrix.html#hail.linalg.BlockMatrix.sparsify_row_intervals">sparsify_row_intervals</a>)</li>
 <li>The matrix is collapsed to entries in processed further as (variant i, variant j, r2)</li>
-<li>Variants <em>above</em> the r2 threshold are kept are kept and fed into a maximally independent set finder</li>
+<li>Variants <em>above</em> the r2 threshold are kept are kept and fed into a maximally independent set finder
+<ul>
+<li>MIS is done in memory on a single machine (see <a href="https://github.com/hail-is/hail/blob/master/hail/src/main/scala/is/hail/utils/Graph.scala">Graph.scala</a>)</li>
+</ul></li>
 <li>The final set of variants to remove is filtered out of the result from step 1</li>
+</ul></li>
+<li>Operations needed to recreate this:
+<ul>
+<li>Matrix transpose + multiplication
+<ul>
+<li>This is how the LD calculation works</li>
+</ul></li>
+<li>Matrix + vector subtraction with broadcasting and element-wise matrix multiplication
+<ul>
+<li>The sparsification of the LD matrix is done by determining which variants are within some number of bp from each other</li>
+<li>This is done in a custom Scala routine, but it could also be expressed as a subtraction of genomic positions to create a mask matrix</li>
+<li>The mask matrix could then be multiplied by the LD matrix to get the correct banding</li>
+</ul></li>
+<li>Matrix enumeration (rows, cols, or entries)
+<ul>
+<li>In the Hail case, enumeration is used to collapse a sparse LD matrix, filter it per entry, build a list of graph edges, and then run a custom <a href="https://github.com/hail-is/hail/blob/820d3adf99884087c9e9b24d51dacc7dd1408d88/hail/src/main/scala/is/hail/utils/Graph.scala#L49">scala routine</a> to find maximal independent sets</li>
+<li>If Privé’s <a href="https://privefl.github.io/bigsnpr/articles/pruning-vs-clumping.html">clumping</a> was used instead, there is a way to express everything with per calculations on the sparsified LD matrix along with distributed sorting and filtering (having an upfront “importance” metric to sort by makes it much easier to do without any single-node algorithm bottlenecks)</li>
+</ul></li>
 </ul></li>
 </ul></li>
 <li>https://www.cog-genomics.org/plink/1.9/ld</li>
@@ -433,6 +454,18 @@ scripting language in the same pipeline for interpreting/visualizing results (th
 <li>Phylogenetic Analysis
 <ul>
 <li>See <a href="https://bmcgenet.biomedcentral.com/articles/10.1186/1471-2156-11-94">Jombart et al. 2010</a> (<a href="https://rdrr.io/cran/adephylo/man/ppca.html">ppca</a> which uses PCA and clustering to identify ancestry</li>
+</ul></li>
+</ul></li>
+<li>Ascertainment bias
+<ul>
+<li>SNP arrays are designed using an “ascertainment sample” and it is this sample that determines what SNPs make it onto the array</li>
+<li>As these SNPs are often filtered to only this with AF in a certain range, it is possible for many rarer variants in such a small sample to be ignored (ascertainment bias)</li>
+<li>There are ways to try to adjust for this, but it is not possible when the “ascertainment sample” does not match the ancestry of the “typed sample” (the one an experiment is being run on)
+<ul>
+<li>From <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3525085/">Population genetic analysis of ascertained SNP data (Nielson 2004)</a>:
+<ul>
+<li>“In cases where there is little or no overlap between the ethnicities of the individuals included in the typed sample and the ascertainment samples, however, corrections can only be made in parametric models describing the genetic relationship between the populations. In such cases, it will typically be difficult or impossible to use classical non-parametric methods for statistical inference.”</li>
+</ul></li>
 </ul></li>
 </ul></li>
 <li>File Formats
