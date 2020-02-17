@@ -4,7 +4,7 @@ author-meta:
 - Jane Roe
 bibliography:
 - content/manual-references.json
-date-meta: '2020-02-16'
+date-meta: '2020-02-17'
 header-includes: '<!--
 
   Manubot generated metadata rendered from header-includes-template.html.
@@ -23,9 +23,9 @@ header-includes: '<!--
 
   <meta property="twitter:title" content="Manuscript Title" />
 
-  <meta name="dc.date" content="2020-02-16" />
+  <meta name="dc.date" content="2020-02-17" />
 
-  <meta name="citation_publication_date" content="2020-02-16" />
+  <meta name="citation_publication_date" content="2020-02-17" />
 
   <meta name="dc.language" content="en-US" />
 
@@ -67,11 +67,11 @@ header-includes: '<!--
 
   <link rel="alternate" type="application/pdf" href="https://related-sciences.github.io/gwas-analysis-manuscript/manuscript.pdf" />
 
-  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/8dd3e3dce2a1cff1604d231401b13a0a6c3db065/" />
+  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/b93554cd6669b0cdaf4bea51bc2c3e5e80345432/" />
 
-  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/8dd3e3dce2a1cff1604d231401b13a0a6c3db065/" />
+  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/b93554cd6669b0cdaf4bea51bc2c3e5e80345432/" />
 
-  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/8dd3e3dce2a1cff1604d231401b13a0a6c3db065/manuscript.pdf" />
+  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/b93554cd6669b0cdaf4bea51bc2c3e5e80345432/manuscript.pdf" />
 
   <meta property="og:type" content="article" />
 
@@ -103,10 +103,10 @@ title: Manuscript Title
 
 <small><em>
 This manuscript
-([permalink](https://related-sciences.github.io/gwas-analysis-manuscript/v/8dd3e3dce2a1cff1604d231401b13a0a6c3db065/))
+([permalink](https://related-sciences.github.io/gwas-analysis-manuscript/v/b93554cd6669b0cdaf4bea51bc2c3e5e80345432/))
 was automatically generated
-from [related-sciences/gwas-analysis-manuscript@8dd3e3d](https://github.com/related-sciences/gwas-analysis-manuscript/tree/8dd3e3dce2a1cff1604d231401b13a0a6c3db065)
-on February 16, 2020.
+from [related-sciences/gwas-analysis-manuscript@b93554c](https://github.com/related-sciences/gwas-analysis-manuscript/tree/b93554cd6669b0cdaf4bea51bc2c3e5e80345432)
+on February 17, 2020.
 </em></small>
 
 ## Authors
@@ -305,7 +305,18 @@ on February 16, 2020.
       - This matrix is than sparsified based on row intervals (see [sparsify_row_intervals](https://hail.is/docs/0.2/linalg/hail.linalg.BlockMatrix.html#hail.linalg.BlockMatrix.sparsify_row_intervals))
       - The matrix is collapsed to entries in processed further as (variant i, variant j, r2)
       - Variants *above* the r2 threshold are kept are kept and fed into a maximally independent set finder
+        - MIS is done in memory on a single machine (see [Graph.scala](https://github.com/hail-is/hail/blob/master/hail/src/main/scala/is/hail/utils/Graph.scala))
       - The final set of variants to remove is filtered out of the result from step 1
+    - Operations needed to recreate this:
+      - Matrix transpose + multiplication
+        - This is how the LD calculation works
+      - Matrix + vector subtraction with broadcasting and element-wise matrix multiplication
+        - The sparsification of the LD matrix is done by determining which variants are within some number of bp from each other
+        - This is done in a custom Scala routine, but it could also be expressed as a subtraction of genomic positions to create a mask matrix
+        - The mask matrix could then be multiplied by the LD matrix to get the correct banding
+      - Matrix enumeration (rows, cols, or entries)
+        - In the Hail case, enumeration is used to collapse a sparse LD matrix, filter it per entry, build a list of graph edges, and then run a custom [scala routine](https://github.com/hail-is/hail/blob/820d3adf99884087c9e9b24d51dacc7dd1408d88/hail/src/main/scala/is/hail/utils/Graph.scala#L49) to find maximal independent sets
+        - If Privé's [clumping](https://privefl.github.io/bigsnpr/articles/pruning-vs-clumping.html) was used instead, there is a way to express everything with per calculations on the sparsified LD matrix along with distributed sorting and filtering (having an upfront "importance" metric to sort by makes it much easier to do without any single-node algorithm bottlenecks)
   - https://www.cog-genomics.org/plink/1.9/ld
   - Actual code from C Chang on how ld pruning works:
     - https://groups.google.com/d/msg/plink2-users/w5TuZo2fgsQ/WbNnE16_xDIJ
@@ -346,6 +357,12 @@ on February 16, 2020.
       - Uses small numbers of highly ranked SNPs (by loading) to uniquely define genetic differences between dogs and grey wolves (supplemental table 2)
   - Phylogenetic Analysis
     - See [Jombart et al. 2010](https://bmcgenet.biomedcentral.com/articles/10.1186/1471-2156-11-94) ([ppca](https://rdrr.io/cran/adephylo/man/ppca.html) which uses PCA and clustering to identify ancestry
+- Ascertainment bias
+  - SNP arrays are designed using an "ascertainment sample" and it is this sample that determines what SNPs make it onto the array
+  - As these SNPs are often filtered to only this with AF in a certain range, it is possible for many rarer variants in such a small sample to be ignored (ascertainment bias)
+  - There are ways to try to adjust for this, but it is not possible when the "ascertainment sample" does not match the ancestry of the "typed sample" (the one an experiment is being run on)
+    - From [Population genetic analysis of ascertained SNP data (Nielson 2004)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3525085/):
+      - "In cases where there is little or no overlap between the ethnicities of the individuals included in the typed sample and the ascertainment samples, however, corrections can only be made in parametric models describing the genetic relationship between the populations. In such cases, it will typically be difficult or impossible to use classical non-parametric methods for statistical inference."
 - File Formats
   - BGEN
     - [BGEN: a binary file format for imputed genotype and haplotype
