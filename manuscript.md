@@ -4,7 +4,7 @@ author-meta:
 - Jane Roe
 bibliography:
 - content/manual-references.json
-date-meta: '2020-02-18'
+date-meta: '2020-02-25'
 header-includes: '<!--
 
   Manubot generated metadata rendered from header-includes-template.html.
@@ -23,9 +23,9 @@ header-includes: '<!--
 
   <meta property="twitter:title" content="Manuscript Title" />
 
-  <meta name="dc.date" content="2020-02-18" />
+  <meta name="dc.date" content="2020-02-25" />
 
-  <meta name="citation_publication_date" content="2020-02-18" />
+  <meta name="citation_publication_date" content="2020-02-25" />
 
   <meta name="dc.language" content="en-US" />
 
@@ -67,11 +67,11 @@ header-includes: '<!--
 
   <link rel="alternate" type="application/pdf" href="https://related-sciences.github.io/gwas-analysis-manuscript/manuscript.pdf" />
 
-  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/78d05ac3460ebb666614b05106a3ecf7a03998d8/" />
+  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/d3bc76a2faf4e80984e310e87b49ce934125f11d/" />
 
-  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/78d05ac3460ebb666614b05106a3ecf7a03998d8/" />
+  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/d3bc76a2faf4e80984e310e87b49ce934125f11d/" />
 
-  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/78d05ac3460ebb666614b05106a3ecf7a03998d8/manuscript.pdf" />
+  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/d3bc76a2faf4e80984e310e87b49ce934125f11d/manuscript.pdf" />
 
   <meta property="og:type" content="article" />
 
@@ -103,10 +103,10 @@ title: Manuscript Title
 
 <small><em>
 This manuscript
-([permalink](https://related-sciences.github.io/gwas-analysis-manuscript/v/78d05ac3460ebb666614b05106a3ecf7a03998d8/))
+([permalink](https://related-sciences.github.io/gwas-analysis-manuscript/v/d3bc76a2faf4e80984e310e87b49ce934125f11d/))
 was automatically generated
-from [related-sciences/gwas-analysis-manuscript@78d05ac](https://github.com/related-sciences/gwas-analysis-manuscript/tree/78d05ac3460ebb666614b05106a3ecf7a03998d8)
-on February 18, 2020.
+from [related-sciences/gwas-analysis-manuscript@d3bc76a](https://github.com/related-sciences/gwas-analysis-manuscript/tree/d3bc76a2faf4e80984e310e87b49ce934125f11d)
+on February 25, 2020.
 </em></small>
 
 ## Authors
@@ -332,6 +332,9 @@ on February 18, 2020.
     - b) calculate LD between each pair of SNPs in the window
     - b) remove one of a pair of SNPs if the LD is greater than 0.5
     - c) shift the window 5 SNPs forward and repeat the procedure
+- Other methods:
+  - [SNPrune](https://gsejournal.biomedcentral.com/articles/10.1186/s12711-018-0404-z?)
+    - Fast, very domain-specific technique for finding highly correlated variants (LD >= .99)
 
 ### PCA
 
@@ -421,10 +424,10 @@ on February 18, 2020.
       - PC-Relate uses this to get an initial set of PCs that are then regressed against genotype calls for individuals
       - Predictions from this model are then used to create allele frequencies used in the usual GRM formula
   - "Existing approaches for the estimation of frequently used measures of recent genetic relatedness, such as kinship coefficients and identity by descent (IBD) sharing probabilities, have limitations in the presence of population structure"
-  - "For example, a variety of maximum likelihood5, 6, 7 and method of moments8, 9, 10 estimators have been developed for relatedness inference from genotype data under a strong assumption of sampling from a single population with no underlying ancestral diversity. In samples with population stratification, these methods that assume population homogeneity have been shown11, 12, 13 to give extremely biased estimates of recent genetic relatedness."
+  - "For example, a variety of maximum likelihood and method of moments estimators have been developed for relatedness inference from genotype data under a strong assumption of sampling from a single population with no underlying ancestral diversity. In samples with population stratification, these methods that assume population homogeneity have been shown to give extremely biased estimates of recent genetic relatedness."
   - "The widely used KING-robust method11 has been developed for inference on close pedigree relationships under an assumption of sampling from ancestrally distinct subpopulations with no admixture. However, KING-robust gives biased relatedness estimates for pairs of individuals who have different ancestry, which can result in incorrect relationship inference for relatives with admixed ancestry."
   - The section "Convolution of Recent and Distant Genetic Relatedness" defines the GRM formula (same as used in Hail/PLINK)
-  - "A widely used empirical genetic relationship matrix (GRM) has been proposed for inference on population structure (distant genetic relatedness) in samples without close relatives,24 as well as inference on recent kinship and heritability estimation of complex traits in samples derived from a single population"
+  - "A widely used empirical genetic relationship matrix (GRM) has been proposed for inference on population structure (distant genetic relatedness) in samples without close relatives, as well as inference on recent kinship and heritability estimation of complex traits in samples derived from a single population"
   - Recent vs Distant genetic relatedness
     - From [PC-Relate Presentation](http://www.biostat.washington.edu/sites/default/files/modules/TOPMED_RELATEDNESS_INFERENCE_Module12_2018.pdf)
       - Distinguishing familial relatedness from population structure using genotype data is difficult, as both manifest as genetic similarity through the sharing of alleles.
@@ -443,6 +446,11 @@ on February 18, 2020.
   - See https://www.cog-genomics.org/plink/1.9/distance (Relationship/covariance)
     - ```--make-rel``` is realized relationship matrix (presumably same as Hail [RRM](https://hail.is/docs/0.2/methods/genetics.html?highlight=genetic_relatedness#hail.methods.realized_relationship_matrix)) and cites [GCTA: A Tool for Genome-wide Complex Trait Analysis](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3014363/) as the reference implementation (this paper has the formula in the Hail docs)
   - PI_HAT from ```--genome``` is kinship coefficient estimator
+  - Homogeneous population requirement
+    - From [original PLINK paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1950838/):
+      - "In homogeneous samples, PLINK provides options to estimate genomewide IBD-sharing coefficients between seemingly unrelated individuals from whole-genome data"
+    - From [v1.07 docs](http://zzz.bwh.harvard.edu/plink/ibdibs.shtml):
+      - "As mentioned above, the IBD estimation part of this analysis relies on the sample being reasonably homogeneous -- otherwise, the estimates will be biased (i.e. individuals within the same strata will show too much apparent IBD)"
 - Papers with good intro surveys of kinship estimation
   - [How to estimate kinship](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6220858/)
     - Mentions VanRaden 2008 as first publication with GRM estimator
@@ -460,6 +468,10 @@ on February 18, 2020.
     - "In cases where there is little or no overlap between the ethnicities of the individuals included in the typed sample and the ascertainment samples, however, corrections can only be made in parametric models describing the genetic relationship between the populations. In such cases, it will typically be difficult or impossible to use classical non-parametric methods for statistical inference."
 
 
+### Long Range LD
+
+- From [bigsnpr.clumping.R](https://github.com/privefl/bigsnpr/blob/master/R/clumping.R): Long-Range LD Can Confound Genome Scans in Admixed Populations.
+
 ### File Formats
 
 - BGEN
@@ -468,7 +480,9 @@ data](https://www.biorxiv.org/content/10.1101/308296v1.full.pdf)
   - https://www.cog-genomics.org/plink/2.0/formats#bgen
   - https://www.well.ox.ac.uk/~gav/bgen_format/
   - https://www.well.ox.ac.uk/~gav/bgen_format/spec/latest.html
-- SIMD and Native Libraries
+
+### SIMD and Native Libraries
+
 - Hail uses breeze (https://github.com/hail-is/hail/blob/de2968e0bf9215e058b1fbace4ae618cc93463fe/hail/src/main/scala/is/hail/expr/ir/BlockMatrixIR.scala)
 - Breeze uses netlib-java which is a wrapper for BLAS/LAPACK/ARPACK (https://github.com/scalanlp/breeze/wiki/Breeze-Linear-Algebra#performance)
   - Breeze uses LAPACK for some ops like [svd](https://github.com/scalanlp/breeze/blob/6b14f1ae0fdc8cb7e2d23286e727dcff72177ef5/math/src/main/scala/breeze/linalg/functions/svd.scala) but not others like [sum](https://github.com/scalanlp/breeze/blob/6b14f1ae0fdc8cb7e2d23286e727dcff72177ef5/math/src/main/scala/breeze/linalg/functions/sum.scala)
@@ -480,6 +494,24 @@ data](https://www.biorxiv.org/content/10.1101/308296v1.full.pdf)
 - On [Atlas vs BLAS vs LAPACK](https://stackoverflow.com/questions/17858104/what-is-the-relation-between-blas-lapack-and-atlas): "ATLAS is a portable reasonably good implementation of the BLAS interfaces, that also implements a few of the most commonly used LAPACK operations."
 - An OpenJDK vector API seems like it would provide SIMD op access, though it is still incubating as of JDK13 ([example](http://cr.openjdk.java.net/~kkharbas/vector-api/CSR/javadoc.02/jdk.incubator.vector/jdk/incubator/vector/package-summary.html))
 - Good overview of vectorization in Spark: https://www.waitingforcode.com/apache-spark-sql/vectorized-operations-apache-spark-sql/read
+- [Atlas vs OpenBLAS vs MKL](http://markus-beuckelmann.de/blog/boosting-numpy-blas.html)
+  - default linux blas & lapack are significantly slower than the others, with MKL being slightly better than openBlas and Atlas
+- Checking numpy/scipy blas
+  - See: https://stackoverflow.com/questions/37184618/find-out-if-which-blas-library-is-used-by-numpy/37190672
+  ```
+  ldd /opt/conda/envs/hail/lib/python3.7/site-packages/numpy/core/_multiarray_umath.cpython-37m-x86_64-linux-gnu.so
+  > libcblas.so.3 => /opt/conda/envs/hail/lib/python3.7/site-packages/numpy/core/../../../../libcblas.so.3 (0x00007f0b737e1000)
+  readlink -e /opt/conda/envs/hail/lib/python3.7/site-packages/numpy/core/../../../../libcblas.so.3
+  > /opt/conda/envs/hail/lib/libopenblasp-r0.3.7.so
+  ```
+  - np.__config__.show() gives paths to MKL used at build, but actual binaries are linked to openblas
+  - This may fix it: https://github.com/conda-forge/numpy-feedstock/issues/153
+    - Add ```blas=*=openblas``` and ```conda-forge::numpy``` to environment.yaml
+  - For scipy:
+  ```
+  ldd /opt/conda/envs/hail/lib/python3.7/site-packages/scipy/linalg/_fblas.cpython-37m-x86_64-linux-gnu.so
+  >> libopenblasp-r0-2ecf47d5.3.7.dev.so => /opt/conda/envs/hail/lib/python3.7/site-packages/scipy/linalg/../.libs/libopenblasp-r0-2ecf47d5.3.7.dev.so (0x00007f13d0f56000)
+  ```
 
 ### C/G and A/T SNPs
 
@@ -520,6 +552,12 @@ two alleles of the SNPs are complementary (A/T or C/G), the true strand remains 
   - Regression
   - Association testing
 
+### Dask
+
+- Arrays created from numpy arrays in memory have all their contents hashed (so this is unexpectedly slow)
+  - See: https://github.com/dask/dask/issues/3946#issuecomment-418568246
+  - Arrays from files are assigned a name based on filename, modification time, etc.
+
 ### Canines
 
 - From [Boxer bares all](https://www.nature.com/articles/news051205-6) (2005)
@@ -530,6 +568,10 @@ two alleles of the SNPs are complementary (A/T or C/G), the true strand remains 
 - From [Genome sequence, comparative analysis and haplotype structure of the domestic dog](https://www.nature.com/articles/nature04338/)
   - On choosing a boxer: "This particular animal was chosen for sequencing because it had the lowest heterozygosity rate among ∼120 dogs tested at a limited set of loci; subsequent analysis showed that the genome-wide heterozygosity rate in this boxer is not substantially different from other breeds (Parker 2004)"
     - The "subsequent analysis" is [Parker, H. G. et al. Genetic structure of the purebred domestic dog](https://www.ncbi.nlm.nih.gov/pubmed/15155949)
+
+### TODO
+
+- Consider using OpenBLAS and MKL for perf testing since Chris Chang mentioned that it can really improve PCA performance
 
 
 ## References {.page_break_before}
