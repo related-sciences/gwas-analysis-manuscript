@@ -4,7 +4,7 @@ author-meta:
 - Jane Roe
 bibliography:
 - content/manual-references.json
-date-meta: '2020-02-25'
+date-meta: '2020-03-19'
 header-includes: '<!--
 
   Manubot generated metadata rendered from header-includes-template.html.
@@ -23,9 +23,9 @@ header-includes: '<!--
 
   <meta property="twitter:title" content="Manuscript Title" />
 
-  <meta name="dc.date" content="2020-02-25" />
+  <meta name="dc.date" content="2020-03-19" />
 
-  <meta name="citation_publication_date" content="2020-02-25" />
+  <meta name="citation_publication_date" content="2020-03-19" />
 
   <meta name="dc.language" content="en-US" />
 
@@ -67,11 +67,11 @@ header-includes: '<!--
 
   <link rel="alternate" type="application/pdf" href="https://related-sciences.github.io/gwas-analysis-manuscript/manuscript.pdf" />
 
-  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/d3bc76a2faf4e80984e310e87b49ce934125f11d/" />
+  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/668efb647944e96ee646cd91c78ddcbd972fe31d/" />
 
-  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/d3bc76a2faf4e80984e310e87b49ce934125f11d/" />
+  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/668efb647944e96ee646cd91c78ddcbd972fe31d/" />
 
-  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/d3bc76a2faf4e80984e310e87b49ce934125f11d/manuscript.pdf" />
+  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/668efb647944e96ee646cd91c78ddcbd972fe31d/manuscript.pdf" />
 
   <meta property="og:type" content="article" />
 
@@ -103,10 +103,10 @@ title: Manuscript Title
 
 <small><em>
 This manuscript
-([permalink](https://related-sciences.github.io/gwas-analysis-manuscript/v/d3bc76a2faf4e80984e310e87b49ce934125f11d/))
+([permalink](https://related-sciences.github.io/gwas-analysis-manuscript/v/668efb647944e96ee646cd91c78ddcbd972fe31d/))
 was automatically generated
-from [related-sciences/gwas-analysis-manuscript@d3bc76a](https://github.com/related-sciences/gwas-analysis-manuscript/tree/d3bc76a2faf4e80984e310e87b49ce934125f11d)
-on February 25, 2020.
+from [related-sciences/gwas-analysis-manuscript@668efb6](https://github.com/related-sciences/gwas-analysis-manuscript/tree/668efb647944e96ee646cd91c78ddcbd972fe31d)
+on March 19, 2020.
 </em></small>
 
 ## Authors
@@ -295,6 +295,30 @@ on February 25, 2020.
     One option to work with large arrays is to use bit-packing, i.e., to pack two or more items of data into a single byte. E.g., this is what the plink BED format does. If you have have diploid calls that are only ever biallelic, then it is possible to fit 4 genotype calls into a single byte. This is 8 times smaller than the NumPy unpacked representation.
 
     However, coding against bit-packed data is not very convenient. Also, there are several libraries available for Python which allow N-dimensional arrays to be stored using compression: h5py, bcolz and zarr. Genotype data is usually extremely compressible due to sparsity - most calls are homozygous ref, i.e., (0, 0), so there are a lot of zeros.
+  - Dependent Projects:
+    - https://github.com/kern-lab/ReLERNN
+      - https://github.com/kern-lab/ReLERNN
+      - Predicts recombination rate along the genome using mutation rates (in vcf) or allele frequencies
+      - https://academic.oup.com/mbe/advance-article/doi/10.1093/molbev/msaa038/5741419
+      - Uses vcf_to_hdf5 ([source](https://github.com/kern-lab/ReLERNN/blob/f0315d76096766f503301226ff1481a7766cb467/ReLERNN/manager.py#L88))
+      - Uses VariantChunkedTable and GenotypeChunkedArray as out-of-core inputs for RNN prediction ([source](https://github.com/kern-lab/ReLERNN/blob/261be79222b39855f2e5fb9579aea5d3ef8b3d74/ReLERNN/ReLERNN_PREDICT))
+    - https://github.com/kern-lab/locator
+      - Predict geographic origin from genomic sequence
+      - Uses scikit-allel to construct model inputs, nothing more
+    - https://github.com/hardingnj/xpclr
+      - Using rogers_huff_r for LD estimation
+      - Using utility methods like "is_non_segregating", "is_singleton", "count_alleles", and "compress" ([source](https://github.com/hardingnj/xpclr/blob/dc470638161a01593da3d545ddec3b7ab6c7baf9/bin/xpclr#L138))
+    - https://github.com/ornl-oxford/genben
+      - scikit-allel benchmarks library
+      - Using scikit-allel PCA ([source](https://github.com/ornl-oxford/genben/blob/e5f64376de8bd6c57b7fa87f378451a464c4f438/genben/core.py))
+    - https://github.com/Gregor-Mendel-Institute/SNPmatch
+      - Using allel.sequence_diversity
+    - https://github.com/SaundersLab/FieldPathogenomics
+      - All by https://github.com/dnlbunting
+      - https://fieldpathogenomics.readthedocs.io/en/latest/
+      - Using ChunkedDaskGenotypeArray and allel VariantTable as part of phylogenetic tree pipeline ([source](https://github.com/SaundersLab/FieldPathogenomics/blob/ba98a38e95dc2b5a2618cb161e3e31feba06e0fe/fieldpathogenomics/pipelines/Tree.py#L50))
+      - Uses locate_unlinked as part of STRUCTURE implementation ([source](https://github.com/SaundersLab/FieldPathogenomics/blob/ba98a38e95dc2b5a2618cb161e3e31feba06e0fe/fieldpathogenomics/pipelines/Structure.py#L222))
+      - Using rogers_huff_r LD estimation 
 
 ### LD pruning
 
