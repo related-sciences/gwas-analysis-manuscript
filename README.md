@@ -1,7 +1,7 @@
 # Output directory containing the formatted manuscript
 
 The [`gh-pages`](https://github.com/related-sciences/gwas-analysis-manuscript/tree/gh-pages) branch hosts the contents of this directory at https://related-sciences.github.io/gwas-analysis-manuscript/.
-The permalink for this webpage version is https://related-sciences.github.io/gwas-analysis-manuscript/v/668efb647944e96ee646cd91c78ddcbd972fe31d/.
+The permalink for this webpage version is https://related-sciences.github.io/gwas-analysis-manuscript/v/5803c8f164782bb7d0e48d9097b3859eb9a19cf8/.
 To redirect to the permalink for the latest manuscript version at anytime, use the link https://related-sciences.github.io/gwas-analysis-manuscript/v/freeze/.
 
 ## Files
@@ -36,4 +36,4 @@ Verifying timestamps with the `ots verify` command requires running a local bitc
 ## Source
 
 The manuscripts in this directory were built from
-[`668efb647944e96ee646cd91c78ddcbd972fe31d`](https://github.com/related-sciences/gwas-analysis-manuscript/commit/668efb647944e96ee646cd91c78ddcbd972fe31d).
+[`5803c8f164782bb7d0e48d9097b3859eb9a19cf8`](https://github.com/related-sciences/gwas-analysis-manuscript/commit/5803c8f164782bb7d0e48d9097b3859eb9a19cf8).
