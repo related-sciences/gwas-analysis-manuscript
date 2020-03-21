@@ -4,7 +4,7 @@ author-meta:
 - Jane Roe
 bibliography:
 - content/manual-references.json
-date-meta: '2020-03-19'
+date-meta: '2020-03-21'
 header-includes: '<!--
 
   Manubot generated metadata rendered from header-includes-template.html.
@@ -23,9 +23,9 @@ header-includes: '<!--
 
   <meta property="twitter:title" content="Manuscript Title" />
 
-  <meta name="dc.date" content="2020-03-19" />
+  <meta name="dc.date" content="2020-03-21" />
 
-  <meta name="citation_publication_date" content="2020-03-19" />
+  <meta name="citation_publication_date" content="2020-03-21" />
 
   <meta name="dc.language" content="en-US" />
 
@@ -67,11 +67,11 @@ header-includes: '<!--
 
   <link rel="alternate" type="application/pdf" href="https://related-sciences.github.io/gwas-analysis-manuscript/manuscript.pdf" />
 
-  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/668efb647944e96ee646cd91c78ddcbd972fe31d/" />
+  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/5803c8f164782bb7d0e48d9097b3859eb9a19cf8/" />
 
-  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/668efb647944e96ee646cd91c78ddcbd972fe31d/" />
+  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/5803c8f164782bb7d0e48d9097b3859eb9a19cf8/" />
 
-  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/668efb647944e96ee646cd91c78ddcbd972fe31d/manuscript.pdf" />
+  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/5803c8f164782bb7d0e48d9097b3859eb9a19cf8/manuscript.pdf" />
 
   <meta property="og:type" content="article" />
 
@@ -103,10 +103,10 @@ title: Manuscript Title
 
 <small><em>
 This manuscript
-([permalink](https://related-sciences.github.io/gwas-analysis-manuscript/v/668efb647944e96ee646cd91c78ddcbd972fe31d/))
+([permalink](https://related-sciences.github.io/gwas-analysis-manuscript/v/5803c8f164782bb7d0e48d9097b3859eb9a19cf8/))
 was automatically generated
-from [related-sciences/gwas-analysis-manuscript@668efb6](https://github.com/related-sciences/gwas-analysis-manuscript/tree/668efb647944e96ee646cd91c78ddcbd972fe31d)
-on March 19, 2020.
+from [related-sciences/gwas-analysis-manuscript@5803c8f](https://github.com/related-sciences/gwas-analysis-manuscript/tree/5803c8f164782bb7d0e48d9097b3859eb9a19cf8)
+on March 21, 2020.
 </em></small>
 
 ## Authors
@@ -318,7 +318,7 @@ on March 19, 2020.
       - https://fieldpathogenomics.readthedocs.io/en/latest/
       - Using ChunkedDaskGenotypeArray and allel VariantTable as part of phylogenetic tree pipeline ([source](https://github.com/SaundersLab/FieldPathogenomics/blob/ba98a38e95dc2b5a2618cb161e3e31feba06e0fe/fieldpathogenomics/pipelines/Tree.py#L50))
       - Uses locate_unlinked as part of STRUCTURE implementation ([source](https://github.com/SaundersLab/FieldPathogenomics/blob/ba98a38e95dc2b5a2618cb161e3e31feba06e0fe/fieldpathogenomics/pipelines/Structure.py#L222))
-      - Using rogers_huff_r LD estimation 
+      - Using rogers_huff_r LD estimation
 
 ### LD pruning
 
@@ -475,6 +475,13 @@ on March 19, 2020.
       - "In homogeneous samples, PLINK provides options to estimate genomewide IBD-sharing coefficients between seemingly unrelated individuals from whole-genome data"
     - From [v1.07 docs](http://zzz.bwh.harvard.edu/plink/ibdibs.shtml):
       - "As mentioned above, the IBD estimation part of this analysis relies on the sample being reasonably homogeneous -- otherwise, the estimates will be biased (i.e. individuals within the same strata will show too much apparent IBD)"
+  - Description of PLINK IBS (not IBD) implementation:
+    - https://arxiv.org/pdf/1410.4803.pdf
+    - This has a good pseudocode description in "Improvements in PLINK 1.9"
+      - The calculation loops through every possible sample pair and for each variant for that pair, increments IBS{0,1,2} based on comparison of calls
+  - Description of PLINK IBD implementation:
+    - https://www.biorxiv.org/content/10.1101/103325v1.full.pdf
+    - "PLINK computes for each pair of individuals an IBS score and uses a hidden Markov Model (HMM) method to find IBDs. The hidden IBD state is estimated by the computed IBS sharing and genome-wide level of relatedness. PLINK is slow because even the first step of computing all IBS scores requires O(n^2) operations for n samples."
 - Papers with good intro surveys of kinship estimation
   - [How to estimate kinship](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6220858/)
     - Mentions VanRaden 2008 as first publication with GRM estimator
@@ -483,6 +490,7 @@ on March 19, 2020.
     - "The maximum-likelihood estimators always generate biologically meaningful probabilities and are usually more accurate than the method-of-moment estimators. However, maximum-likelihood approaches are usually slower and sometimes more biased than the method-of-moment ones. Method-of-moment methods usually use the observed numbers of IBS sharing loci instead of the predicted numbers when calculating IBD sharing probabilities, and hence may yield estimates that cannot be interpreted as probabilities, in which case, researchers truncate the estimates into the meaningful range [0, 1]. The truncation of the results introduces artificial effects and biases."
     - This paper cites PLINK as one of the method-of-moments estimators (rather than maximum likelihood)
 
+
 ### Ascertainment bias
 
 - SNP arrays are designed using an "ascertainment sample" and it is this sample that determines what SNPs make it onto the array
@@ -490,6 +498,50 @@ on March 19, 2020.
 - There are ways to try to adjust for this, but it is not possible when the "ascertainment sample" does not match the ancestry of the "typed sample" (the one an experiment is being run on)
   - From [Population genetic analysis of ascertained SNP data (Nielson 2004)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3525085/):
     - "In cases where there is little or no overlap between the ethnicities of the individuals included in the typed sample and the ascertainment samples, however, corrections can only be made in parametric models describing the genetic relationship between the populations. In such cases, it will typically be difficult or impossible to use classical non-parametric methods for statistical inference."
+
+
+### Positive Selection Statistics
+
+- [Selective Sweep](https://en.wikipedia.org/wiki/Selective_sweep)
+  - Occurs when a beneficial mutation becomes fixed (AF of 1) and causes nearby mutations to become fixed as well even if they don't confer some benefit
+- Generally, speaking these statistics and methods characterize the selective pressure related to an allele in a population
+- [Homozygosity and linkage disequilibrium](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1462072/)
+  - Haplotype homozygosity - the probability of selecting two identical haplotypes at random from a population
+  - This is different from genotype homozygosity in that:
+    - It is defined by two loci instead of one (though you could still think of it in terms of two haplotypes from the same person at the same loci)
+    - It seems to only consider when the allele is present (i.e. "homozygous alternate" is what this term refers to)
+    - For example, for two SNPs with some number of alleles each (not necessarily 2), the probability of of identical haplotypes selected at random is the product of the AF for each (not the product of AF for both present + product of 1-AF for each)
+      - See figure 1 for this definition
+- [Haplotype Homozygosity and Derived Alleles in the Human Genome](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1474085)
+  - Common LD statistics like D' and r2 do not differentiate between the alleles at a single locus
+    - This means that it doesn't matter if the allele is present or absent, only that it correlates with others
+  - On gauging the age of an allele in a population subject to **POSITIVE** selection:
+    - A new allele from a mutation will start on a single haplotype
+    - Over time, LD between this allele and those nearby will decay (from recombination)
+    - This "decay in LD" is "stopwatch by which its age can be estimated"
+  - NOTE: This kind of method may be useful for characterizing when a protective allele for a disease arose
+- [A Map of Recent Positive Selection in the Human Genome](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1382018/)
+  - Defines iHS (integrated haplotype score)
+  - Authors state that a **"selection map" of ongoing sweeps** in the human genome are an important genome annotation that should be considered in GWAS studies
+  - in scikit-allele: [allel.ihs](https://scikit-allel.readthedocs.io/en/stable/stats/selection.html#allel.ihs)
+  - Builds on extended haplotype homozygosity (EHH)
+    - "The EHH measures the decay of identity, as a function of distance, of haplotypes that carry a specified “core” allele at one end"
+    - Figure 1B is the best explanation of why haplotype homozygosity is more informative than LD estimates
+      - It allows comparing an ancestral and derived allele in terms of LD around them
+    - This works by starting with a "core" allele (one of interest) and moving to adjacent alleles one at a time, with increasing distance, and determining haplotype homozygosity with each
+      - For a derived allele undergoing positive selection, you should see that the homozygosity decreases more slowly (i.e. LD is higher) as distance increases
+      - This is because presumably the derived allele is causing the others to be inherited together more often
+  - Properties of iHS:
+    - "The iHS at each SNP measures the strength of evidence for selection acting at or near that SNP"
+    - "The iHS is constructed to have an approximately standard normal distribution and hence the sizes of iHS signals from different SNPs are directly comparable regardless of the allele frequencies at those SNPs"
+    - "it does not provide a formal significance test"
+    - Controls for recombination rate using "LD patterns and the estimated genetic distances"
+    - Has better power than "Fay and Wu's H, and Tajima's D" (cf. [allel.moving_delta_tajima_d](https://scikit-allel.readthedocs.io/en/stable/_modules/allel/stats/selection.html#moving_delta_tajima_d))
+  - Calculation:
+    - "iHS is computed for every SNP with minor allele frequency > 5%, treating each SNP in turn as a core SNP"
+  - Inference:
+    - As an example, the authors mention that alleles favoring lighter skin in Europeans are undergoing positive selection
+    - Similar examples are shown for reproductive cell fitness, metabolism, and nuerological attributes
 
 
 ### Long Range LD
