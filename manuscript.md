@@ -4,7 +4,7 @@ author-meta:
 - Jane Roe
 bibliography:
 - content/manual-references.json
-date-meta: '2020-03-21'
+date-meta: '2020-06-02'
 header-includes: '<!--
 
   Manubot generated metadata rendered from header-includes-template.html.
@@ -23,9 +23,9 @@ header-includes: '<!--
 
   <meta property="twitter:title" content="Manuscript Title" />
 
-  <meta name="dc.date" content="2020-03-21" />
+  <meta name="dc.date" content="2020-06-02" />
 
-  <meta name="citation_publication_date" content="2020-03-21" />
+  <meta name="citation_publication_date" content="2020-06-02" />
 
   <meta name="dc.language" content="en-US" />
 
@@ -67,11 +67,11 @@ header-includes: '<!--
 
   <link rel="alternate" type="application/pdf" href="https://related-sciences.github.io/gwas-analysis-manuscript/manuscript.pdf" />
 
-  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/5803c8f164782bb7d0e48d9097b3859eb9a19cf8/" />
+  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/4202750d98ad1b28d10e8e30554b6eeae6d1bed9/" />
 
-  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/5803c8f164782bb7d0e48d9097b3859eb9a19cf8/" />
+  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/4202750d98ad1b28d10e8e30554b6eeae6d1bed9/" />
 
-  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/5803c8f164782bb7d0e48d9097b3859eb9a19cf8/manuscript.pdf" />
+  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/4202750d98ad1b28d10e8e30554b6eeae6d1bed9/manuscript.pdf" />
 
   <meta property="og:type" content="article" />
 
@@ -103,10 +103,10 @@ title: Manuscript Title
 
 <small><em>
 This manuscript
-([permalink](https://related-sciences.github.io/gwas-analysis-manuscript/v/5803c8f164782bb7d0e48d9097b3859eb9a19cf8/))
+([permalink](https://related-sciences.github.io/gwas-analysis-manuscript/v/4202750d98ad1b28d10e8e30554b6eeae6d1bed9/))
 was automatically generated
-from [related-sciences/gwas-analysis-manuscript@5803c8f](https://github.com/related-sciences/gwas-analysis-manuscript/tree/5803c8f164782bb7d0e48d9097b3859eb9a19cf8)
-on March 21, 2020.
+from [related-sciences/gwas-analysis-manuscript@4202750](https://github.com/related-sciences/gwas-analysis-manuscript/tree/4202750d98ad1b28d10e8e30554b6eeae6d1bed9)
+on June 2, 2020.
 </em></small>
 
 ## Authors
@@ -257,6 +257,28 @@ on March 21, 2020.
       - Population stratification (IBS + MDS)
       - Association analysis (logreg, fisher/chisq)
       - Genetic relatedness
+- Exome Sequencing Stats
+  - The ~50k individuals were called using GATK in joint analysis workflow, which produces gVCF for each sample for a cohort-wide calling to create the final "joint" result ([source](https://www.ukbiobank.ac.uk/wp-content/uploads/2019/08/UKB-50k-Exome-Sequencing-Data-Release-July-2019-FAQs.pdf))
+    - The joint results ("project level variant data" as they call it) is 100G PLINK
+    - Sample level variant call data is ~5TB gVCF
+    - Sample level aligned sequence data is ~50TB CRAM
+    - The [cited paper](https://www.biorxiv.org/content/10.1101/572347v1.full.pdf) within states that there are ~9.6M variants in the final call set, with 4.7M in targeted regions (Table 2)
+
+### LMM
+
+- Dealing with related samples in GWAS via lasso (much like LMMs do):
+  - [A LASSO penalized regression approach for genome-wide association analyses using related individuals: application to the Genetic Analysis Workshop 19 simulated data](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5133525/) (2016)
+    - "Ignoring relatedness between study participants can have significant impact on the study results and increase false positive rates"
+    - "Because of the computational intensity involved in the estimation of the parameters of the LMM, most methods perform single marker analysis"
+    - "Lately, least absolute shrinkage and selection operator (LASSO) regression [6] has attracted attention as an alternative tool for selecting the most promising SNPs in GWAS"
+    - "Currently, all LASSO methods used in GWAS assume that the sample members are unrelated to each other."
+    - One approach to dealing with this in lasso multivariant SNP regression is to:
+      - Fit null model with GRM as covariance and then fit lasso to residuals
+      - This makes the samples independent
+    - The method requires a GRM
+    - The model adds an L1 penalty to the standard LMM likelihood with a 0 mean and GRM based covariance random effect
+    - Shows that SNPs way more SNPs are identified (non-zero beta) than via univariate methods but that those identified are **NOT** accurate
+
 
 ### Ecosystem Tools
 
@@ -319,6 +341,41 @@ on March 21, 2020.
       - Using ChunkedDaskGenotypeArray and allel VariantTable as part of phylogenetic tree pipeline ([source](https://github.com/SaundersLab/FieldPathogenomics/blob/ba98a38e95dc2b5a2618cb161e3e31feba06e0fe/fieldpathogenomics/pipelines/Tree.py#L50))
       - Uses locate_unlinked as part of STRUCTURE implementation ([source](https://github.com/SaundersLab/FieldPathogenomics/blob/ba98a38e95dc2b5a2618cb161e3e31feba06e0fe/fieldpathogenomics/pipelines/Structure.py#L222))
       - Using rogers_huff_r LD estimation
+- [SNPRelate](http://github.com/zhengxwen/SNPRelate)
+  - [List of functions](http://bioconductor.org/packages/release/bioc/vignettes/SNPRelate/inst/doc/SNPRelate.html#function-list)
+  - Authors also created [gdsfmt](http://bioconductor.org/packages/release/bioc/vignettes/gdsfmt/inst/doc/gdsfmt.html), which is the data structure they use within the library
+    - This is basically an R version of zarr, not a genetics-specific file format
+  - They also created [SeqArray](http://bioconductor.org/packages/release/bioc/vignettes/SeqArray/inst/doc/SeqArrayTutorial.html)
+    - This is for whole exome/genome sequencing data
+    - It is an extension to GDS
+  - Benchmarks show the uniprocessor implementations of PCA and identity-by-descent are ∼8–50 times faster than the
+    implementations provided in the popular EIGENSTRAT (v3.0) and PLINK (v1.07) programs, respectively, and can be sped up to 30–300-fold by using eight cores
+  - tutorials: http://bioconductor.org/packages/release/bioc/vignettes/SNPRelate/inst/doc/SNPRelate.html
+    - These cover:
+      - LD pruning
+      - PCA
+      - Fst estimation (fixation index)
+        - This is some statistic that summarizes population structure (given two or more populations as inputs)
+        - Higher Fst means that the population is more differentiated than one with lower Fst ([source](https://www.uwyo.edu/dbmcd/popecol/maylects/popgengloss.html))
+        - Compare to scikit-allele [Fst Estimation](http://alimanfoo.github.io/2015/09/21/estimating-fst.html)
+        - From [wikipedia](https://en.wikipedia.org/wiki/Fixation_index):
+          - "The values range from 0 to 1. A zero value implies complete panmixis; that is, that the two populations are interbreeding freely. A value of one implies that all genetic variation is explained by the population structure, and that the two populations do not share any genetic diversity"
+      - Kinship estimation
+        - IBD PLINK
+        - IBD Maximum Likelihood
+        - KING method of moments
+      - IBS
+        - Uses MDS over IBS matrix to show population clustering
+  - http://bioconductor.org/packages/release/bioc/html/SNPRelate.html
+  - KING
+    - https://github.com/zhengxwen/SNPRelate/blob/master/src/genKING.cpp
+      - Has c++ implementations of King homo (population homogeneity) and King robust (provides robust relationship inference in the presence of population substructure)
+  - IBD (PLINK port it seems)
+    - https://www.rdocumentation.org/packages/SNPRelate/versions/1.6.4/topics/snpgdsPairIBD
+    - https://github.com/zhengxwen/SNPRelate/blob/master/R/IBD.R
+    - https://github.com/zhengxwen/SNPRelate/blob/ac01cbaca760228def7342261d7eed5e8bdbcd20/src/genIBS.cpp#L556
+  - LD pruning
+    - https://github.com/zhengxwen/SNPRelate/blob/master/src/genLD.cpp
 
 ### LD pruning
 
@@ -348,17 +405,47 @@ on March 21, 2020.
       - In the Hail case, enumeration is used to collapse a sparse LD matrix, filter it per entry, build a list of graph edges, and then run a custom [scala routine](https://github.com/hail-is/hail/blob/820d3adf99884087c9e9b24d51dacc7dd1408d88/hail/src/main/scala/is/hail/utils/Graph.scala#L49) to find maximal independent sets
       - If Privé's [clumping](https://privefl.github.io/bigsnpr/articles/pruning-vs-clumping.html) was used instead, there is a way to express everything with per calculations on the sparsified LD matrix along with distributed sorting and filtering (having an upfront "importance" metric to sort by makes it much easier to do without any single-node algorithm bottlenecks)
 - https://www.cog-genomics.org/plink/1.9/ld
-- Actual code from C Chang on how ld pruning works:
+- Actual pseudo code from C Chang on how ld pruning works (2015):
   - https://groups.google.com/d/msg/plink2-users/w5TuZo2fgsQ/WbNnE16_xDIJ
+- location of ld_prune for PLINK 1.9: https://github.com/chrchang/plink-ng/blob/master/1.9/plink_ld.c
+- An earlier conversation (2014) on the ld pruning implementation:
+  - https://groups.google.com/forum/#!topic/plink2-users/wlSG51SdbFE
+    - This suggests the old algorithm was different and marked snps for some kind of greedy selection
 - In PLINK:
   - (PLINK 1.07) https://wlz0726.github.io/2017/05/27/LD-prune-with-plink/
     - a) consider a window of 50 SNPs
     - b) calculate LD between each pair of SNPs in the window
     - b) remove one of a pair of SNPs if the LD is greater than 0.5
     - c) shift the window 5 SNPs forward and repeat the procedure
+  - How to make PLINK use scores other than MAF: see [here](https://groups.google.com/forum/#!topic/plink2-users/FSAF_36tIEs)
+    - `--read-freq` is the opportune param
 - Other methods:
   - [SNPrune](https://gsejournal.biomedcentral.com/articles/10.1186/s12711-018-0404-z?)
     - Fast, very domain-specific technique for finding highly correlated variants (LD >= .99)
+- Maximal independent set notes
+  - From paper on Luby algorithm (https://www.cs.utah.edu/~hari/teaching/bigdata/SICOM86-LubyM-Parallel.Algorithm.Graph.Maximal.Independent.Set.pdf)
+    - This is commonly cited
+    - "The obvious sequential algorithm for the MIS problem can be simply stated as: Initialize I to the empty set; for 1, , n, if vertex is not adjacent to any vertex in I then add vertex, to I. The MIS output by this
+algorithm is called the lexicographically first maximal independent set (LFMIS)."
+      - This is the PLINK algorithm (if all MAFs are the same)
+    - "Valiant [Va] noted that the MIS problem, which has such an easy sequential algorithm, may
+be one of the problems for which there is no fast parallel algorithm."
+  - This paper in Algorithm 1 describes the LFMIS algorithm well
+    - http://people.cs.georgetown.edu/~jfineman/papers/greedymis.pdf
+  - Blelloch's iterative algorithm (parallel) describes LD pruning well where the dependency structure in the sequential selection problem is very shallow (due to the windows)
+    - https://arxiv.org/pdf/1202.3205.pdf
+    - "Luby’s randomized algorithm [17] ... can be converted to run in linear work. The problem, however, is that on a modest number of processors it is very hard for these parallel algorithms to outperform the very simple and fast sequential greedy algorithm. Furthermore the parallel algorithms give different results than the sequential algorithm"
+  - Blelloch citers:
+    - https://www.semanticscholar.org/paper/A-High-Quality-and-Fast-Maximal-Independent-Set-for-Burtscher-Devale/5e4866a895eb947eaf6f0ecd0556e83745630b54
+    - [Tight Analysis of Parallel Randomized Greedy MIS](https://arxiv.org/pdf/1707.05124.pdf) mentioned by Blelloch in [Theoretically Efficient Parallel Graph Algorithms Can Be Fast and Scalable](https://arxiv.org/pdf/1805.05208.pdf) as the most recent work improving on his bounds that the number of iterations is O(log n) rather than O(log^2 n)
+  - [Parallel algorithms for the maximal independent set problem
+in graphs](https://pdfs.semanticscholar.org/a9ea/412e2a9a963dcf494710bd1e75cfd481d36a.pdf)
+    - "The greedy sequential algorithm to compute a MIS loops over the vertices according to the given order, adding them to the resulting set only if no previous neighboring vertex has been added."
+    - "If this structure is shallow (has a polylogarithmic depth), then running each of the iterates in parallel, while respecting the dependencies,leads to an efficient parallel implementation that mimics the sequential algorithm. The depth of this dependance structure is called the dependence length"
+  - [MIS on GPU presentation](http://on-demand.gputechconf.com/gtc/2017/presentation/s7286-martin-burtscher-a-high-quality-and-fast-maximal-independent-set-algorithm-for-gpus.pdf)
+    - Paper: [A High-Quality and Fast Maximal Independent Set Implementation for GPUs](https://userweb.cs.txstate.edu/~mb92/papers/topc18.pdf)
+  - Effects of LD pruning on downstream analysis
+    - Sensitivity analysis with LD pruning for epistasis screening: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6558841/
 
 ### PCA
 
@@ -392,6 +479,14 @@ on March 21, 2020.
     - Uses small numbers of highly ranked SNPs (by loading) to uniquely define genetic differences between dogs and grey wolves (supplemental table 2)
 - Phylogenetic Analysis
   - See [Jombart et al. 2010](https://bmcgenet.biomedcentral.com/articles/10.1186/1471-2156-11-94) ([ppca](https://rdrr.io/cran/adephylo/man/ppca.html) which uses PCA and clustering to identify ancestry
+- Scaling
+  - Approximate truncated SVD: O(mnk) (k = rank)
+  - Randomized truncated SVD: (mn log(k))
+  - From https://arxiv.org/pdf/0909.4061.pdf (via https://discourse.related.vc/t/pca-implementations/224)
+    - "A standard deterministic technique for computing an approximate SVD is to perform a rank-revealing
+QR factorization of the matrix, and then to manipulate the factors to obtain the final
+decomposition. The cost of this approach is typically O(kmn)"
+    - "For a dense input matrix, randomized algorithms require O(mn log(k)) floating-point operations (flops) in contrast with O(mnk) for classical algorithms"
 
 ### Kinship Estimation
 
@@ -402,9 +497,10 @@ on March 21, 2020.
   - PLINK --genome PI_HAT (as in KING, this is P(IBD2) + .5 * P(IBD1))
   - PLINK --make-rel (for GRM), Hail GRM/RRM, and GCTA
     - According to the PC-Relate paper and Goudet 2018, these are all actually estimating the same thing as summed IBD probabilities
-    - PC-Relate also defines the the GRM (actually it seems to be the RRM in the Hail parlance given the HWE normalization) as: "The entries in this GRM measure the genotype correlations for pairs of individuals"
+    - PC-Relate also defines the the GRM as: "The entries in this GRM measure the genotype correlations for pairs of individuals"
     - **Side note**: This assertion, that the GRM estimator (which is a correlation in \[-1, 1\]) is asymptotically equal to IBD probability sharing (a probability in \[0, 1\]) was unexpected for me, but definitely helpful to keep in mind when trying to parse the intention of all these different methods.
       - Appendix A (Empirical Genetic Relationship Matrix) shows this proof along with the disclaimer that it is only true in a homogeneous population
+- Summary of PC-AiR and PC-Relate from GENESIS package: https://www.bioconductor.org/packages/release/bioc/vignettes/GENESIS/inst/doc/pcair.html#principal-components-analysis-in-related-samples-pc-air
 - Summary table of methods with the population characteristics they support unbiased estimation with:
 
 | Estimator         | LD  | Pop Structure | Recent Admixture |
@@ -489,7 +585,26 @@ on March 21, 2020.
   - [Quickly identifying identical and closely related subjects in large databases using genotype data](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5469481/)
     - "The maximum-likelihood estimators always generate biologically meaningful probabilities and are usually more accurate than the method-of-moment estimators. However, maximum-likelihood approaches are usually slower and sometimes more biased than the method-of-moment ones. Method-of-moment methods usually use the observed numbers of IBS sharing loci instead of the predicted numbers when calculating IBD sharing probabilities, and hence may yield estimates that cannot be interpreted as probabilities, in which case, researchers truncate the estimates into the meaningful range [0, 1]. The truncation of the results introduces artificial effects and biases."
     - This paper cites PLINK as one of the method-of-moments estimators (rather than maximum likelihood)
-
+  - [Efficient Estimation of Realized Kinship from Single Nucleotide Polymorphism Genotypes](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5340323)
+    - 2017
+    - Says that "pedigree kinship" is what all "realized kinship" methods are trying to estimate (the former is a deterministic function of the true pedigree)
+    - Explains "realized kinship" estimation methods like PLINK, GRM, and many variants in paragraph 4 of intro
+    - The paper simulates data from 1KG using ibd_create of MORGAN software
+    - Table 1 is a terrific summary of why GRM estimates are so much worse than IBD via method of moments or MLE
+      - Interestingly, it also includes the self-reported pedigree data
+- Comparisons of methods
+  - GRM vs RRM
+    - The only difference is that variants are divided by binomial variance (which assumes HWE) in the GRM calculation while they are divided instead by the emprical variance in the RRM
+  - RRM vs Pearson correlation
+    - They are the same except that the denominator in the RRM standardization is multiplied by the number of variants (not sure why)
+  - GRM vs IBD from method of moments (PLINK) or MLE
+    - First, they are the same in expectation
+    - However, the GRM estimates have much higher variance ([Wang et al. 2017](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5340323/))
+- Using imputed variants to inform kinship estimation
+  - https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1007021
+- UK Biobank
+  - According to [Simultaneous SNP selection and adjustment for population structure in high dimensional prediction models](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1008766#pgen.1008766.e070):
+    - 147k people are related in UKB and only 18k have a documented relationship
 
 ### Ascertainment bias
 
@@ -541,8 +656,24 @@ on March 21, 2020.
     - "iHS is computed for every SNP with minor allele frequency > 5%, treating each SNP in turn as a core SNP"
   - Inference:
     - As an example, the authors mention that alleles favoring lighter skin in Europeans are undergoing positive selection
-    - Similar examples are shown for reproductive cell fitness, metabolism, and nuerological attributes
+    - Similar examples are shown for reproductive cell fitness, metabolism, and neurological attributes
 
+### WGS/WES Operations
+
+- Hail
+  - Splitting multi-allelic variants using common HTS (high-throughput seqeuencing) fields: [split_multi_hts](https://hail.is/docs/0.2/methods/genetics.html?highlight=transmission#hail.methods.split_multi_hts)
+    - Requires the following entry fields, some of which are transformed in the downcoded biallelic variant results:
+    ```
+    struct {
+      GT: call,
+      AD: array<int32>,
+      DP: int32,
+      GQ: int32,
+      PL: array<int32>,
+      PGT: call,
+      PID: str
+    }
+    ```
 
 ### Long Range LD
 
@@ -618,15 +749,11 @@ two alleles of the SNPs are complementary (A/T or C/G), the true strand remains 
     - what big_randomSVD calls: https://github.com/privefl/bigstatsr/blob/master/R/randomSVD.R#L105
     - where big_SVD class is defined: https://github.com/privefl/bigstatsr/blob/c859ad28d9c6f8c8cc365c3315e3abbb81e128a8/R/SVD.R#L92
 
-### GWAS Pipeline Operations
+### Association Analysis
 
-- These are frequent operations in a GWAS workflow:
-  - Selection by row/col data or metadata
-  - Row/col aggregation
-  - Row/col distance and pruning
-  - PCA
-  - Regression
-  - Association testing
+- Nealelab original gwas uses linear regression for ALL phenotypes (binary, ordinal, or continuous)
+  - See: http://www.nealelab.is/blog/2017/9/11/details-and-considerations-of-the-uk-biobank-gwas
+  - "Model misspecification: While normally distributed quantitative traits are suited for linear regression models, binary traits are better suited to a logistic model, and the linear assumptions can create biases in the beta coefficients and significance, which we address below."
 
 ### Dask
 
