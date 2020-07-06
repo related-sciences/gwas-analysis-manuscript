@@ -4,7 +4,7 @@ author-meta:
 - Jane Roe
 bibliography:
 - content/manual-references.json
-date-meta: '2020-06-02'
+date-meta: '2020-07-06'
 header-includes: '<!--
 
   Manubot generated metadata rendered from header-includes-template.html.
@@ -23,9 +23,9 @@ header-includes: '<!--
 
   <meta property="twitter:title" content="Manuscript Title" />
 
-  <meta name="dc.date" content="2020-06-02" />
+  <meta name="dc.date" content="2020-07-06" />
 
-  <meta name="citation_publication_date" content="2020-06-02" />
+  <meta name="citation_publication_date" content="2020-07-06" />
 
   <meta name="dc.language" content="en-US" />
 
@@ -67,11 +67,11 @@ header-includes: '<!--
 
   <link rel="alternate" type="application/pdf" href="https://related-sciences.github.io/gwas-analysis-manuscript/manuscript.pdf" />
 
-  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/4202750d98ad1b28d10e8e30554b6eeae6d1bed9/" />
+  <link rel="alternate" type="text/html" href="https://related-sciences.github.io/gwas-analysis-manuscript/v/b72722d997e9bb39b2689ab84a140fb03156e5bf/" />
 
-  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/4202750d98ad1b28d10e8e30554b6eeae6d1bed9/" />
+  <meta name="manubot_html_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/b72722d997e9bb39b2689ab84a140fb03156e5bf/" />
 
-  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/4202750d98ad1b28d10e8e30554b6eeae6d1bed9/manuscript.pdf" />
+  <meta name="manubot_pdf_url_versioned" content="https://related-sciences.github.io/gwas-analysis-manuscript/v/b72722d997e9bb39b2689ab84a140fb03156e5bf/manuscript.pdf" />
 
   <meta property="og:type" content="article" />
 
@@ -103,10 +103,10 @@ title: Manuscript Title
 
 <small><em>
 This manuscript
-([permalink](https://related-sciences.github.io/gwas-analysis-manuscript/v/4202750d98ad1b28d10e8e30554b6eeae6d1bed9/))
+([permalink](https://related-sciences.github.io/gwas-analysis-manuscript/v/b72722d997e9bb39b2689ab84a140fb03156e5bf/))
 was automatically generated
-from [related-sciences/gwas-analysis-manuscript@4202750](https://github.com/related-sciences/gwas-analysis-manuscript/tree/4202750d98ad1b28d10e8e30554b6eeae6d1bed9)
-on June 2, 2020.
+from [related-sciences/gwas-analysis-manuscript@b72722d](https://github.com/related-sciences/gwas-analysis-manuscript/tree/b72722d997e9bb39b2689ab84a140fb03156e5bf)
+on July 6, 2020.
 </em></small>
 
 ## Authors
@@ -720,6 +720,34 @@ data](https://www.biorxiv.org/content/10.1101/308296v1.full.pdf)
   >> libopenblasp-r0-2ecf47d5.3.7.dev.so => /opt/conda/envs/hail/lib/python3.7/site-packages/scipy/linalg/../.libs/libopenblasp-r0-2ecf47d5.3.7.dev.so (0x00007f13d0f56000)
   ```
 
+### Hardy Weinberg Equilibrium
+
+- Hail implementation:
+  - [hardyWeinbergTest](https://github.com/hail-is/hail/blob/e2c7a5421dee8bbee90a6749e5a5eb1f580de2d5/hail/src/main/scala/is/hail/stats/package.scala#L109)
+  - [LeveneHaldane](https://github.com/hail-is/hail/blob/1225a6c838c15230de07c1c562f7e6e0f255e7c4/hail/src/main/scala/is/hail/stats/LeveneHaldane.scala#L10)
+  - See this PDF on an explanation of the distribution and the implementation: https://hail.is/docs/0.2/LeveneHaldane.pdf
+    - "The implementation is based on Wigginton et al. (2005)."
+  - Has same reference as SNPRelate
+- SNPRelate implementation
+  - Code: https://github.com/zhengxwen/SNPRelate/blob/87a9f253b73cb4f86f5a480d6a225a50b9c3326d/src/genHWE.cpp
+  - This is based on "Wigginton, JE, Cutler, DJ, and Abecasis, GR (2005) A Note on Exact Tests of Hardy-Weinberg Equilibrium"
+- [A Note on Exact Tests of Hardy-Weinberg Equilibrium (2005)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1199378/#RF1)
+  - [Semantic Scholar](https://www.semanticscholar.org/paper/A-note-on-exact-tests-of-Hardy-Weinberg-Wigginton-Cutler/f7bb8b20c217c81cb446b0bd9c3f6b187de80b6c)
+    - 982 citations 
+  - Shows poor performance of chi-square tests vs exact test
+  - "The principles and procedures used for testing HWE are well established (Levene 1949; Haldane 1954; Hernandez and Weir 1989; Wellek 2004), but the lack of a publicly available, efficient, and reliable implementation for exact tests has led many scientists to rely on asymptotic tests that can perform poorly with realistic sample sizes."
+  - Code for C/C++ and R are available at http://csg.sph.umich.edu/abecasis/Exact/index.html
+- [Genepop](https://biopython.org/wiki/PopGen_Genepop)
+  - Python (part of biopython)
+  - Has Fst, HWE, LD, and allele frequency calculations
+  - Also has "migration" and "Fis" statistics (not sure what those are)
+  - Has "Isolation By Distance (IBD)"
+
+### Firth Tests
+
+- Hail: https://github.com/hail-is/hail/blob/e2c7a5421dee8bbee90a6749e5a5eb1f580de2d5/hail/src/main/scala/is/hail/stats/LogisticRegressionModel.scala
+- Glow: https://github.com/projectglow/glow/blob/dfb69e33cad6b103197319d3eefe66a6c31e062f/core/src/main/scala/io/projectglow/sql/expressions/FirthTest.scala
+
 ### C/G and A/T SNPs
 
 - This QC step is common because the probe sequence on genotyping arrays is not specific to a reference genome, by design.  This means that the genotyping data can tell you that an "A" nucleotide was present at a locus but it doesn't actually know if this nucleotide represents some kind of "variant" with respect to a larger population.  The probes are chosen such that they capture individual sites of common variation but deciding which nucleotides comprise heterozygous, homozygous ref, homozygous alt genotypes (i.e. make a call) is up to the user.  For any given site, the arrays capture multiple individual nucleotides so one way to do this independent of a reference genome, for a single dataset, is to simply assume that whatever nucleotide is less common is the minor (aka alternate) allele and the other is the major (aka reference) allele.  This is an acceptable (and very common) method for analyzing a single dataset but causes obvious problems when trying to compare calls for the same variants between datasets (a nucleotide may have been the alternate in one and reference in the other).  Two strategies for making datasets comparable then are:  
@@ -754,6 +782,60 @@ two alleles of the SNPs are complementary (A/T or C/G), the true strand remains 
 - Nealelab original gwas uses linear regression for ALL phenotypes (binary, ordinal, or continuous)
   - See: http://www.nealelab.is/blog/2017/9/11/details-and-considerations-of-the-uk-biobank-gwas
   - "Model misspecification: While normally distributed quantitative traits are suited for linear regression models, binary traits are better suited to a logistic model, and the linear assumptions can create biases in the beta coefficients and significance, which we address below."
+- Quick reviews of recent LMM papers: https://discourse.related.vc/t/linear-mixed-models-for-gwas/271
+- Bolt-LMM
+  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4342297/
+  - Bolt-LMM is notable for not requiring guassian priors on all SNP effects
+    - It is difficult (maybe impossible?) to do this in a frequentist framework and still get p-values
+    - It is possible though, to make a model of any form (bayesian in this case), subtract predictions from outcomes to get residuals, and then create test statistics using these residuals
+      - This "provides a bridge between Bayesian modeling for phenotype prediction and the frequentist association testing framework"
+  - The idea of not requiring guassian priors is also viewed as supporting non-infinitesimal genetic architecture
+    - infinitesimal architecture means that all effects are non-zero
+  - The actual bolt-LMM model is based on [Polygenic Modeling with Bayesian Sparse Linear Mixed Models](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3567190/) which is a guassian mixture model with one proportion parameter dictating which gaussian normal effects are not exactly 0
+    - Side note: "Methods" in this paper has useful notes on centering/scaling conventions
+  - Background on standard association models (i.e. variance component model)
+    - This, like Regenie, states that the genetic random term is really just a product of the genotype matrix times a vector of random coefficients (most formulations appeal directly to the GRM -- which is still needed in a REML solution)
+- BGENIE
+  - https://jmarchini.org/bgenie/
+  - This is closed source but apparently includes ways for expression multiple phenotype regression solutions as matrix operations (rather than separate regressions):
+    - "BGENIE uses the Eigen matrix library and OpenMP to carry out as many of the linear algebra operations in parallel as possible. For example, estimation of effect sizes of large numbers of SNPs can be carried out in parallel using matrix operations, and indexing of missing data values is used to allow for fast estimation of standard errors."
+- REGENIE
+  - https://www.biorxiv.org/content/10.1101/2020.06.19.162354v2.full.pdf
+  - Methods
+    - See "Whole genome linear regression"
+    - Purpose of projection matrix applied to both phenotype and genotypes: "Covariates effects are removed from both the trait and the genotypes"
+      - While not mentioned in the paper, the formula for this, PX = IN − X(XTX)^−1XT, is a common method in REML for removing mean effects from a problem so that variance components can be estimated in an unbiased way
+        - See: https://people.csail.mit.edu/xiuming/docs/tutorials/reml.pdf (Section 2.1 The Theory)
+          - That formula is one of many possible "error contrasts" (I've seen it elsewhere too so it is apparently a common choice)
+          - MLE for both betas and variance results in biased variance estimate
+          - Using an orthogonal error contrast results in an optimization for variance params that do not involve betas (the orthogonality means that A^TX becomes 0 so A^TXB becomes 0)
+          - A solution for the variance components is then plugged into the standard weighted LS solution for betas
+        - Removing the covariate effects from the phenotype is also a common performance optimization (FaST-LMM/Bolt/SAIGE all do it) since it means that when doing each individual variant association test, you do not need to include the covariates in the regression (other than the variant being tested)
+          - From Bolt: "We assume for now that all have been mean-centered and there are no covariates; we treat covariates by projecting them out from both genotypes and phenotypes, which is equivalent to including them as fixed effects"
+            - See supplementary note 1.1.1 for more details on that (with comparison to GCTA-LOCO)
+            - This mentions that the effective sample size (dof) decreases from N to N-C where C is the number of covariates used
+          - Other references on this:
+            - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3695771/
+              - This shows the same X(XTX)^−1XT adjustment as the projection (a derivation is in appendix)
+              - This also shows how to solve simultaneous single covariate regressions (after projection)
+              - It mentions how to calculate standard errors and p-values given the projected covariates
+              - It references https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3348564/ which also discusses how projection loses a degree of freedom (with a single covariate)
+    - QC
+      - See "UK Biobank data set" section
+      - The SNP set used to create null models was very different from the set used in association analysis
+        - The SNPs for association were restricted to about 11M imputed variants
+          - Filters: (MAF > 0.5% or MAC > 5) and annotated as functional (not sure what that means, but probably VEP consequences)
+        - The set used for building polygenic models used these filters:
+          - MAF >= 1%
+          - HWE p <= 10^-15
+          - call rate > 99%
+          - LD pruning with R2 of .9 (why so high?) and fixed window of 1k markers with 100 marker step
+- Removing sample correlation
+  - It is possible to use an RRM to remove correlation between samples prior to doing a standard linear regression
+    - See https://www.ebi.ac.uk/sites/ebi.ac.uk/files/shared/documents/phdtheses/Casale-Thesis.pdf
+      - Section 2.3.3 touches on this briefly
+    - The [Grid-LMM](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6383949/) paper methods equation 2 + 3 also show how Cholesky decomposition of a sample covariance matrix can be used to transform the original model into one solvable by fixed effect linear regression
+
 
 ### Dask
 
